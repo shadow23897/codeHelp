@@ -34,7 +34,8 @@ def main_menu():
     print("\033[92m[2] - System cleaner\033[0m")
     print("\033[92m[3] - website clone\033[0m")
     print("\033[92m[4] - bloqueur de pub free\033[0m")
-    print("\033[92m[5] - Quitter\033[0m")
+    print("\033[92m[5] - verify link virus\033[0m")
+    print("\033[92m[6] - Quitter\033[0m")
     choix = input("\nChoisissez une option : ")
 
     if choix == "1":
@@ -46,6 +47,8 @@ def main_menu():
     elif choix == "4":
         run_script("4.py")
     elif choix == "5":
+        run_script("5.py")
+    elif choix == "6":
         print("\n\033[91mFermeture du programme...\033[0m")
         exit()
     else:
