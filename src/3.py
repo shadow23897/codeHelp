@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from colorama import init, Fore
+import os
+import ctypes
+import sys
 
 init(autoreset=True)
 
@@ -14,32 +17,26 @@ def banner():
     print(Fore.RED + "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░")
     print(Fore.RED + " ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓████████▓▒░▒▓█▓▒░")
     print(Fore.RED + "════════════════════════════════════════════════════════════════════════════")
-    print(Fore.RED + "  https://github.com/shadow23897/codeHelp/")
+    print(Fore.RED + "  https://github.com/shadow23897/codeHelp/\n https://discord.gg/codehelp")
     print(Fore.RED + "════════════════════════════════════════════════════════════════════════════")
 
 banner()
 
-
-
 url = input("Entrez l'URL du site : ")
-
 
 if not url.startswith("http"):
     url = "http://" + url
 
 try:
-
     response = requests.get(url, timeout=10)
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-
     html_filename = "site_code.html"
     with open(html_filename, "w", encoding="utf-8") as file:
         file.write(soup.prettify())
     print(f"Le code HTML a été sauvegardé dans {html_filename}")
-
 
     css_links = soup.find_all("link", {"rel": "stylesheet"})
     css_files = []
@@ -50,7 +47,6 @@ try:
             if not css_url.startswith("http"):
                 css_url = requests.compat.urljoin(url, css_url)
             css_files.append(css_url)
-
 
     for index, css_url in enumerate(css_files):
         try:
@@ -63,7 +59,6 @@ try:
         except requests.RequestException:
             print(f"⚠ Impossible de télécharger le fichier CSS : {css_url}")
 
-
     js_files = []
     script_tags = soup.find_all("script", {"src": True})
 
@@ -73,7 +68,6 @@ try:
             if not js_url.startswith("http"):
                 js_url = requests.compat.urljoin(url, js_url)
             js_files.append(js_url)
-
 
     for index, js_url in enumerate(js_files):
         try:
@@ -88,3 +82,18 @@ try:
 
 except requests.RequestException as e:
     print(f"❌ Erreur lors de la récupération du site : {e}")
+
+
+input("\nAppuyez sur une touche pour continuer...")
+
+if os.name == 'nt':
+    try:
+        hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if hwnd:
+           
+            ctypes.windll.user32.PostMessageW(hwnd, 0x0010, 0, 0)
+    except Exception as e:
+        print("Erreur lors de la fermeture de la fenêtre :", e)
+else:
+    sys.exit()
+
